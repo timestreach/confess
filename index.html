@@ -205,11 +205,10 @@
 
         async function connectDB() {
             try {
-                // Anonymous auth ensures security rules pass
+                // Anonymous auth ensures security rules pass smoothly
                 const userCredential = await signInAnonymously(auth);
                 if (userCredential.user) {
                     userConnected = true;
-                    // Standard root-level tracking collection
                     docRef = doc(db, 'tracking', sessionId);
                     
                     // Initialize document
