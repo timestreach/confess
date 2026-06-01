@@ -110,7 +110,7 @@
         <!-- Content gets injected here via JS -->
     </div>
 
-    <!-- Secret Admin Trigger -->
+    <!-- Secret Admin Trigger (Bottom Right) -->
     <button id="admin-trigger" class="fixed bottom-4 right-4 w-8 h-8 rounded-full opacity-[0.03] hover:opacity-50 transition-opacity z-40 flex items-center justify-center cursor-pointer" title="Admin Dashboard">
         <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
     </button>
@@ -194,6 +194,7 @@
         let userConnected = false;
         
         const sessionId = "her_visit_01"; // Specific ID to track her session
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         let docRef = null;
 
         let sessionAnalytics = {
@@ -209,7 +210,8 @@
                 const userCredential = await signInAnonymously(auth);
                 if (userCredential.user) {
                     userConnected = true;
-                    docRef = doc(db, 'tracking', sessionId);
+                    // Safely store tracking data in Firestore
+                    docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tracking', sessionId);
                     
                     // Initialize document
                     await setDoc(docRef, sessionAnalytics, { merge: true });
