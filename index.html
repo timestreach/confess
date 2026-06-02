@@ -4,81 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-color: #0f0f0f;
-            --accent-color: #ff4d6d;
-        }
-
         body {
-            background-color: var(--bg-color);
+            background-color: #0f0f0f;
             color: white;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        ::selection {
-            background-color: rgba(255, 77, 109, 0.3);
+            margin: 0;
+            height: 100vh;
         }
 
         .font-serif {
             font-family: 'Playfair Display', serif;
         }
 
-        /* Ambient Glow Animations */
-        @keyframes pulseSlow {
-            0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.25; transform: translate(-50%, -50%) scale(1.05); }
-        }
-
-        .ambient-glow {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 300px;
-            height: 300px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            filter: blur(120px);
-            pointer-events: none;
-            animation: pulseSlow 6s infinite ease-in-out;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-        }
-
-        @media (min-width: 768px) {
-            .ambient-glow {
-                width: 500px;
-                height: 500px;
-                filter: blur(150px);
-            }
-        }
-
-        .vignette-overlay {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(ellipse at center, transparent 0%, var(--bg-color) 100%);
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Cinematic Fade In Effects */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes expandWidth {
-            from { width: 0; opacity: 0; }
-            to { width: 3rem; opacity: 1; }
+        @keyframes pulseSlow {
+            0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.25; transform: translate(-50%, -50%) scale(1.05); }
         }
 
         .fade-in-element {
@@ -86,293 +36,458 @@
             animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        .line-animate {
-            opacity: 0;
-            animation: expandWidth 1s ease-out forwards;
-        }
-
-        /* Transitions */
-        .step-container {
-            transition: opacity 0.8s ease-in-out;
-        }
-        
-        .opacity-0 {
-            opacity: 0 !important;
+        .bg-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background-color: #ff4d6d;
+            border-radius: 50%;
+            filter: blur(150px);
+            animation: pulseSlow 6s infinite ease-in-out;
             pointer-events: none;
+            z-index: 0;
         }
 
-        /* Buttons */
+        @media (min-width: 768px) {
+            .bg-glow {
+                width: 500px;
+                height: 500px;
+            }
+        }
+
+        .gradient-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent, #0f0f0f);
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .btn-primary {
+            position: relative;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
             background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
+            cursor: pointer;
         }
+
         .btn-primary:hover {
             border-color: rgba(255, 77, 109, 0.5);
             background-color: rgba(255, 77, 109, 0.1);
             box-shadow: 0 0 20px rgba(255, 77, 109, 0.2);
         }
-        
+
         .btn-ghost {
             color: #9ca3af;
-            background-color: transparent;
+            background: transparent;
             border: 1px solid transparent;
         }
+
         .btn-ghost:hover {
             color: white;
         }
-
-        /* SVG Icons */
-        .icon {
-            width: 1rem;
-            height: 1rem;
-            transition: transform 0.3s ease;
-        }
-        .group:hover .icon-right {
-            transform: translateX(4px);
-        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center relative">
+<body class="selection:bg-[#ff4d6d]/30 flex flex-col items-center justify-center">
 
-    <div class="ambient-glow"></div>
-    <div class="vignette-overlay"></div>
+    <div class="bg-glow"></div>
+    <div class="gradient-overlay"></div>
 
-    <main id="app-container" class="relative z-10 w-full max-w-2xl px-6 md:px-12 flex flex-col items-center text-center step-container"></main>
-
-    <aside id="admin-container" class="fixed inset-0 z-50 bg-[#0a0a0a] overflow-y-auto opacity-0 pointer-events-none transition-opacity duration-500 hidden">
-        <div class="min-h-screen p-6 md:p-12">
-            <div class="max-w-4xl mx-auto" id="admin-content">
-                </div>
+    <div id="app-container" class="relative z-10 w-full max-w-2xl px-6 md:px-12 flex flex-col items-center text-center transition-opacity duration-700 opacity-100">
         </div>
-    </aside>
 
-    <button id="admin-trigger" class="fixed bottom-4 right-4 w-6 h-6 rounded-full opacity-10 hover:opacity-50 transition-opacity z-40 flex items-center justify-center" title="Admin Dashboard">
+    <button id="admin-trigger" class="fixed bottom-4 right-4 w-8 h-8 rounded-full opacity-[0.03] hover:opacity-50 transition-opacity z-40 flex items-center justify-center cursor-pointer" title="Admin Dashboard">
         <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
     </button>
 
+    <div id="admin-container" class="fixed inset-0 bg-[#0a0a0a] text-white p-6 md:p-12 z-50 hidden opacity-0 transition-opacity duration-500 overflow-y-auto pointer-events-none">
+        <div class="max-w-4xl mx-auto pointer-events-auto">
+            <div class="flex items-center justify-between mb-12 border-b border-white/10 pb-6">
+                <div>
+                    <h1 class="font-serif text-2xl md:text-3xl flex items-center gap-3 text-white">
+                        <svg class="w-6 h-6 text-[#ff4d6d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        Creator Dashboard
+                    </h1>
+                    <p class="text-gray-400 mt-2 font-light text-sm md:text-base">Real-time engagement metrics for your private link.</p>
+                </div>
+                <button id="close-admin" class="px-4 py-2 rounded-full border border-white/10 hover:bg-white/5 transition-colors text-sm cursor-pointer">
+                    Back to Experience
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </div>
+                    <p class="text-gray-400 text-sm font-medium mb-1">Total Visitors (Session)</p>
+                    <p class="text-4xl font-serif">1</p>
+                </div>
+                
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                    <p class="text-gray-400 text-sm font-medium mb-1">Max Step Reached</p>
+                    <p class="text-4xl font-serif text-[#ff4d6d]"><span id="admin-max-step">1</span> <span class="text-lg text-gray-500">/ 5</span></p>
+                    <p id="admin-completed" class="text-xs text-[#ff4d6d]/80 mt-2 font-medium hidden">✨ Full Experience Completed</p>
+                </div>
+
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <p class="text-gray-400 text-sm font-medium mb-1">Start Time</p>
+                    <p id="admin-start-time" class="text-2xl font-serif mt-2">--:--</p>
+                </div>
+            </div>
+
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+                <h2 class="font-serif text-xl mb-6">Activity Log</h2>
+                <div id="admin-log-container" class="space-y-4">
+                    </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
 
-        // Your specific Firebase keys
+        // Your Exact Firebase Config from the screenshot!
         const firebaseConfig = {
             apiKey: "AIzaSyDU7YeBrosMN2BOy0UR-v_z-_NEslkboRg",
             authDomain: "for-her13.firebaseapp.com",
             projectId: "for-her13",
             storageBucket: "for-her13.firebasestorage.app",
             messagingSenderId: "664218007363",
-            appId: "1:664218007363:web:53a9e31752ddc3276ea1f6"
+            appId: "1:664218007363:web:53a9e31752ddc3276ea1f6",
+            measurementId: "G-HRML9S28RT"
         };
 
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
         const db = getFirestore(app);
-        
-        // Single database document to track her live progress
-        const docRef = doc(db, 'tracking', 'live_visit');
 
-        // --- State ---
+        // --- State Variables ---
         let currentStep = 1;
         let maybeNotClicked = false;
         let isTransitioning = false;
+        let userConnected = false;
+        
+        const sessionId = "visit_" + Date.now() + "_" + Math.random().toString(36).substring(2, 10);
+        let docRef = null;
 
-        // --- DOM Elements ---
+        let sessionAnalytics = {
+            visitorId: sessionId,
+            opened: true,
+            openedAt: new Date().toISOString(),
+            startTime: new Date().toLocaleTimeString(),
+            maxStepReached: 1,
+            completed: false,
+            device: navigator.userAgent,
+            activityLog: [
+                {
+                    step: 1,
+                    time: new Date().toLocaleTimeString()
+                }
+            ]
+        };
+
+        async function connectDB() {
+            try {
+                // Anonymous auth ensures security rules pass smoothly if needed
+                const userCredential = await signInAnonymously(auth);
+                if (userCredential.user) {
+                    userConnected = true;
+                    logEvent(analytics, "site_opened");
+                    docRef = doc(db, 'tracking', sessionId);
+                    
+                    // Initialize document
+                    await setDoc(docRef, {
+                        visitorId: sessionId,
+                        opened: true,
+                        openedAt: new Date().toISOString(),
+                        startTime: new Date().toLocaleTimeString(),
+                        maxStepReached: 1,
+                        completed: false,
+                        device: navigator.userAgent,
+                        activityLog: [
+                            {
+                                step: 1,
+                                time: new Date().toLocaleTimeString()
+                            }
+                        ]
+                    }, { merge: true });
+
+                    // Listen for real-time updates for your admin dashboard
+                    onSnapshot(docRef, (docSnap) => {
+                        if (docSnap.exists()) {
+                            sessionAnalytics = docSnap.data();
+                            updateAdminUI();
+                        }
+                    }, (error) => {
+                        console.error("Listener error:", error);
+                    });
+                }
+            } catch (error) {
+                console.warn("Could not connect to live database.", error);
+            }
+        }
+        
+        connectDB();
+
         const appContainer = document.getElementById('app-container');
         const adminContainer = document.getElementById('admin-container');
-        const adminContent = document.getElementById('admin-content');
         const adminTrigger = document.getElementById('admin-trigger');
+        const closeAdmin = document.getElementById('close-admin');
 
-        const chevronRight = `<svg class="icon icon-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
-
-        function createFadeText(text, delay, classes = "") {
-            return `<div class="fade-in-element ${classes}" style="animation-delay: ${delay}s">${text}</div>`;
-        }
-
-        function createButton(text, delay, onClickCode, variant = "primary", showIcon = true) {
-            const variantClass = variant === 'primary' ? 'btn-primary' : 'btn-ghost';
-            const iconHtml = showIcon ? chevronRight : '';
-            return `
-                <div class="fade-in-element" style="animation-delay: ${delay}s">
-                    <button onclick="${onClickCode}" class="group relative px-6 py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 flex items-center justify-center gap-2 ${variantClass}">
-                        ${text} ${iconHtml}
-                    </button>
-                </div>
-            `;
+        function getArrowIcon() {
+            return `<svg class="w-4 h-4 ml-2 inline-block transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
         }
 
         function renderStep() {
-            let html = '<div class="space-y-6 flex flex-col items-center w-full">';
+            let html = '';
 
             if (currentStep === 1) {
-                html += createFadeText('Hey…', 0.3, 'font-serif text-3xl md:text-4xl tracking-wide mb-4');
-                html += createFadeText('This is not random.', 1.5, 'text-gray-400 font-light text-base md:text-lg');
-                html += createFadeText('This is something I made,<br/>just for you.', 2.5, 'text-gray-400 font-light text-base md:text-lg mb-8 leading-relaxed');
-                html += createButton('Continue', 4.0, 'goToNextStep()', 'primary');
+                html = `
+                    <div class="space-y-6 flex flex-col items-center">
+                        <div class="fade-in-element font-serif text-3xl md:text-4xl tracking-wide mb-4" style="animation-delay: 0.3s">Hey…</div>
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl" style="animation-delay: 1.5s">This is not random.</div>
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl mb-8 leading-relaxed" style="animation-delay: 2.5s">
+                            This is something I made,<br/>just for you.
+                        </div>
+                        <div class="fade-in-element mt-4" style="animation-delay: 4.0s">
+                            <button onclick="goToNextStep()" class="btn-primary group">
+                                Continue ${getArrowIcon()}
+                            </button>
+                        </div>
+                    </div>
+                `;
             } 
             else if (currentStep === 2) {
                 if (!maybeNotClicked) {
-                    html += createFadeText('Before you go further…', 0.3, 'font-serif text-3xl md:text-4xl tracking-wide mb-4');
-                    html += createFadeText('Are you sure you want to see this?', 1.5, 'text-gray-400 font-light text-base md:text-lg mb-10');
-                    html += `
-                        <div class="flex flex-col sm:flex-row gap-4 items-center mt-8 w-full justify-center">
-                            ${createButton("Yes, I'm sure", 2.5, "goToNextStep()", "primary", false)}
-                            ${createButton("Maybe not", 3.0, "handleMaybeNot()", "ghost", false)}
+                    html = `
+                        <div class="space-y-6 flex flex-col items-center">
+                            <div class="fade-in-element font-serif text-3xl md:text-4xl tracking-wide mb-4" style="animation-delay: 0.3s">Before you go further…</div>
+                            <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl mb-10" style="animation-delay: 1.5s">Are you sure you want to see this?</div>
+                            <div class="flex flex-col sm:flex-row gap-4 items-center mt-8">
+                                <div class="fade-in-element" style="animation-delay: 2.5s">
+                                    <button onclick="goToNextStep()" class="btn-primary">Yes, I'm sure</button>
+                                </div>
+                                <div class="fade-in-element" style="animation-delay: 3.0s">
+                                    <button onclick="handleMaybeNot()" class="btn-primary btn-ghost">Maybe not</button>
+                                </div>
+                            </div>
                         </div>
                     `;
                 } else {
-                    html += createFadeText('That’s okay.', 0.2, 'font-serif text-3xl md:text-4xl tracking-wide mb-4');
-                    html += createFadeText('But some things are meant<br/>to be seen at least once.', 1.2, 'text-gray-400 font-light text-base md:text-lg mb-10 leading-relaxed');
-                    html += createButton('Continue', 2.5, 'goToNextStep()', 'primary');
+                    html = `
+                        <div class="space-y-6 flex flex-col items-center">
+                            <div class="fade-in-element font-serif text-3xl md:text-4xl tracking-wide mb-4" style="animation-delay: 0.2s">That’s okay.</div>
+                            <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl mb-10 leading-relaxed" style="animation-delay: 1.2s">
+                                But some things are meant<br/>to be seen at least once.
+                            </div>
+                            <div class="fade-in-element mt-4" style="animation-delay: 2.5s">
+                                <button onclick="goToNextStep()" class="btn-primary group">
+                                    Continue ${getArrowIcon()}
+                                </button>
+                            </div>
+                        </div>
+                    `;
                 }
             }
             else if (currentStep === 3) {
-                html += createFadeText('In a world full of noise…', 0.3, 'font-serif text-3xl md:text-4xl tracking-wide mb-4');
-                html += createFadeText('some people just stand out.', 1.5, 'text-gray-400 font-light text-base md:text-lg');
-                html += createFadeText('Not because they try,<br/>but because they are different.', 3.0, 'text-gray-400 font-light text-base md:text-lg mb-10 leading-relaxed');
-                html += createButton('Next', 4.5, 'goToNextStep()', 'primary');
+                html = `
+                    <div class="space-y-6 flex flex-col items-center">
+                        <div class="fade-in-element font-serif text-3xl md:text-4xl tracking-wide mb-4" style="animation-delay: 0.3s">In a world full of noise…</div>
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl" style="animation-delay: 1.5s">some people just stand out.</div>
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl mb-10 leading-relaxed" style="animation-delay: 3.0s">
+                            Not because they try,<br/>but because they are different.
+                        </div>
+                        <div class="fade-in-element mt-4" style="animation-delay: 4.5s">
+                            <button onclick="goToNextStep()" class="btn-primary group">
+                                Next ${getArrowIcon()}
+                            </button>
+                        </div>
+                    </div>
+                `;
             }
             else if (currentStep === 4) {
-                html += createFadeText('So I thought…', 0.3, 'font-serif text-3xl md:text-4xl tracking-wide mb-6');
-                html += createFadeText('instead of saying this in a normal way,', 1.5, 'text-gray-400 font-light text-base md:text-lg');
-                html += createFadeText('I’d create something different.', 2.5, 'text-gray-400 font-light text-base md:text-lg');
-                html += createFadeText('Because you’re not someone ordinary.', 4.0, 'font-serif italic text-gray-300 text-lg md:text-xl mt-4 mb-10');
-                
-                html += `<div class="h-px bg-white/10 my-4 line-animate" style="animation-delay: 5.5s;"></div>`;
+                html = `
+                    <div class="space-y-6 flex flex-col items-center">
+                        <div class="fade-in-element font-serif text-3xl md:text-4xl tracking-wide mb-6" style="animation-delay: 0.3s">So I thought…</div>
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl" style="animation-delay: 1.5s">instead of saying this in a normal way,</div>
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl" style="animation-delay: 2.5s">I’d create something different.</div>
+                        <div class="fade-in-element font-serif italic text-gray-300 text-xl md:text-2xl mt-4 mb-10" style="animation-delay: 4.0s">Because you’re not someone ordinary.</div>
+                        
+                        <div class="h-px w-12 bg-white/10 my-4 opacity-0" style="animation: fadeIn 1s ease-out 5.5s forwards;"></div>
 
-                html += createFadeText('I wanted you to know…', 6.0, 'font-serif text-xl md:text-2xl tracking-wide text-white mt-8 mb-2');
-                html += createFadeText('you’ve been on my mind.', 7.5, 'font-medium tracking-wide text-[var(--accent-color)] text-lg md:text-xl drop-shadow-[0_0_10px_rgba(255,77,109,0.3)] mb-12');
-                html += createButton('One last thing', 9.0, 'goToNextStep()', 'primary');
+                        <div class="fade-in-element font-serif text-2xl md:text-3xl tracking-wide text-white mt-8 mb-2" style="animation-delay: 6.0s">I wanted you to know…</div>
+                        <div class="fade-in-element font-sans font-medium tracking-wide text-[#ff4d6d] text-xl md:text-2xl mb-12" style="filter: drop-shadow(0 0 10px rgba(255,77,109,0.3)); animation-delay: 7.5s">
+                            you’ve been on my mind.
+                        </div>
+
+                        <div class="fade-in-element mt-4" style="animation-delay: 9.0s">
+                            <button onclick="goToNextStep()" class="btn-primary group">
+                                One last thing ${getArrowIcon()}
+                            </button>
+                        </div>
+                    </div>
+                `;
             }
             else if (currentStep === 5) {
-                html += createFadeText('No pressure.', 0.3, 'text-gray-400 font-light text-base md:text-lg');
-                html += createFadeText('No expectations.', 1.3, 'text-gray-400 font-light text-base md:text-lg');
-                
-                html += createFadeText('Just something real.', 2.8, 'font-serif text-xl md:text-2xl tracking-wide text-white my-8');
+                html = `
+                    <div class="space-y-6 flex flex-col items-center">
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl" style="animation-delay: 0.3s">No pressure.</div>
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl" style="animation-delay: 1.3s">No expectations.</div>
+                        
+                        <div class="fade-in-element font-serif text-2xl md:text-3xl tracking-wide text-white my-8" style="animation-delay: 2.8s">
+                            Just something real.
+                        </div>
 
-                html += createFadeText('If this made you smile even a little…<br/>then it was worth it.', 4.5, 'text-gray-400 font-light text-base md:text-lg leading-relaxed mb-12');
+                        <div class="fade-in-element font-sans text-gray-400 font-light text-lg md:text-xl leading-relaxed mb-12" style="animation-delay: 4.5s">
+                            If this made you smile even a little…<br/>then it was worth it.
+                        </div>
 
-                html += createFadeText(`
-                    <span class="font-serif italic text-lg md:text-xl text-white/80 border-b border-[#ff4d6d]/30 pb-1 pr-2 inline-block">
-                        — from someone who noticed you
-                    </span>
-                `, 6.5, 'mt-12');
+                        <div class="fade-in-element mt-12" style="animation-delay: 6.5s">
+                            <span class="font-serif italic text-xl md:text-2xl text-white/80 border-b border-[#ff4d6d]/30 pb-1 pr-2">
+                                — from someone who noticed you
+                            </span>
+                        </div>
+                    </div>
+                `;
             }
 
-            html += '</div>';
             appContainer.innerHTML = html;
-        }
-
-        // Silent Database Sync Function
-        function syncToDatabase(step) {
-            setDoc(docRef, {
-                maxStepReached: step,
-                lastActive: new Date().toLocaleTimeString()
-            }, { merge: true }).catch(err => console.log("DB sync error (safe to ignore):", err));
         }
 
         window.goToNextStep = function() {
             if (isTransitioning) return;
             isTransitioning = true;
             
-            appContainer.classList.add('opacity-0');
+            // Fade out current content
+            appContainer.classList.replace('opacity-100', 'opacity-0');
             
-            setTimeout(() => {
+            setTimeout(async () => {
                 currentStep++;
+                
+                logEvent(
+                    analytics,
+                    "page_reached",
+                    {
+                        page: currentStep
+                    }
+                );
+                
                 maybeNotClicked = false;
                 
-                // Sync progress to Firebase in the background
-                syncToDatabase(currentStep);
+                // Track Analytics
+                sessionAnalytics.maxStepReached = Math.max(sessionAnalytics.maxStepReached, currentStep);
                 
+                if(currentStep >= 5){
+                    sessionAnalytics.completed = true;
+                }
+
+                const newLog = { step: currentStep, time: new Date().toLocaleTimeString() };
+                sessionAnalytics.activityLog.push(newLog);
+
+                // Push Live to Firebase
+                if (userConnected && docRef) {
+                    try {
+                        await setDoc(docRef, {
+                            maxStepReached: sessionAnalytics.maxStepReached,
+                            completed: currentStep >= 5,
+                            lastSeen: new Date().toISOString(),
+                            activityLog: arrayUnion(newLog)
+                        }, { merge: true });
+                    } catch (e) {
+                        console.error("Error writing document: ", e);
+                    }
+                }
+                
+                // Render new content and Fade In
                 renderStep();
-                appContainer.classList.remove('opacity-0');
+                appContainer.classList.replace('opacity-0', 'opacity-100');
                 isTransitioning = false;
-            }, 800);
+            }, 700);
         };
 
         window.handleMaybeNot = function() {
             if (isTransitioning) return;
             isTransitioning = true;
-            
-            appContainer.classList.add('opacity-0');
-            
+            appContainer.classList.replace('opacity-100', 'opacity-0');
             setTimeout(() => {
                 maybeNotClicked = true;
                 renderStep();
-                appContainer.classList.remove('opacity-0');
+                appContainer.classList.replace('opacity-0', 'opacity-100');
                 isTransitioning = false;
-            }, 800);
-        };
-
-        function renderAdminDashboard(dbStep, dbTime) {
-            const lockIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--accent-color)]"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
-            const activityIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`;
-            const clockIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`;
-
-            const isComplete = dbStep === 5 
-                ? `<p class="text-xs text-[#ff4d6d]/80 mt-2 font-medium">✨ Full Experience Completed</p>` 
-                : '';
-
-            adminContent.innerHTML = `
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 md:mb-12 border-b border-white/10 pb-6 gap-4">
-                    <div>
-                        <h1 class="font-serif text-2xl md:text-3xl flex items-center gap-3">
-                            ${lockIcon} Remote Tracker
-                        </h1>
-                        <p class="text-gray-400 mt-2 font-light text-sm md:text-base">Live Firebase Connection Active.</p>
-                    </div>
-                    <button onclick="closeAdmin()" class="px-4 py-2 rounded-full border border-white/10 hover:bg-white/5 transition-colors text-sm shrink-0">
-                        Back to Experience
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
-                    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">${activityIcon}</div>
-                        <p class="text-gray-400 text-sm font-medium mb-1 relative z-10">Her Live Progress</p>
-                        <p class="text-3xl md:text-4xl font-serif text-[var(--accent-color)] relative z-10">Step ${dbStep || 1} <span class="text-lg text-gray-500">/ 5</span></p>
-                        ${isComplete}
-                    </div>
-
-                    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">${clockIcon}</div>
-                        <p class="text-gray-400 text-sm font-medium mb-1 relative z-10">Last Active Time</p>
-                        <p class="text-xl md:text-2xl font-serif mt-2 relative z-10">${dbTime || '--:--:--'}</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        adminTrigger.addEventListener('click', () => {
-            adminContainer.classList.remove('hidden');
-            setTimeout(() => {
-                adminContainer.classList.remove('opacity-0');
-                adminContainer.classList.add('pointer-events-auto');
-            }, 10);
-
-            // Listen to Firebase Live Updates!
-            onSnapshot(docRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    renderAdminDashboard(data.maxStepReached, data.lastActive);
-                } else {
-                    renderAdminDashboard(1, "Not opened yet");
-                }
-            });
-        });
-
-        window.closeAdmin = function() {
-            adminContainer.classList.add('opacity-0');
-            adminContainer.classList.remove('pointer-events-auto');
-            setTimeout(() => {
-                adminContainer.classList.add('hidden');
             }, 500);
         };
 
-        // Render page instantly, log step 1 to database
-        window.onload = function() {
-            renderStep();
-            syncToDatabase(1);
-        };
+        function updateAdminUI() {
+            document.getElementById('admin-max-step').innerText = sessionAnalytics.maxStepReached;
+            document.getElementById('admin-start-time').innerText = sessionAnalytics.startTime || "--:--";
+            
+            if (sessionAnalytics.maxStepReached >= 5) {
+                document.getElementById('admin-completed').classList.remove('hidden');
+            }
+
+            const logContainer = document.getElementById('admin-log-container');
+            logContainer.innerHTML = '';
+            
+            if(sessionAnalytics.activityLog) {
+                sessionAnalytics.activityLog.forEach(log => {
+                    const statusText = log.step === 5 ? "Reached Final Page" : `Progressed to Step ${log.step}`;
+                    logContainer.innerHTML += `
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/5 pb-4 last:border-0 last:pb-0 gap-2">
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-[#ff4d6d]/10 text-[#ff4d6d] flex items-center justify-center font-serif text-sm flex-shrink-0">
+                                    ${log.step}
+                                </div>
+                                <p class="text-gray-300 text-sm md:text-base">${statusText}</p>
+                            </div>
+                            <p class="text-gray-500 font-mono text-xs md:text-sm sm:text-right pl-12 sm:pl-0">${log.time}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        adminTrigger.addEventListener('click', () => {
+            updateAdminUI();
+            adminContainer.classList.remove('hidden');
+            setTimeout(() => {
+                adminContainer.classList.replace('opacity-0', 'opacity-100');
+                adminContainer.classList.remove('pointer-events-none');
+            }, 10);
+        });
+
+        closeAdmin.addEventListener('click', () => {
+            adminContainer.classList.replace('opacity-100', 'opacity-0');
+            adminContainer.classList.add('pointer-events-none');
+            setTimeout(() => {
+                adminContainer.classList.add('hidden');
+            }, 500);
+        });
+
+        // Initialize first render
+        renderStep();
     </script>
 </body>
 </html>
